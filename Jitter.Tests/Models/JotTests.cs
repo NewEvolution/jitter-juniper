@@ -15,7 +15,7 @@ namespace Jitter.Tests.Models
         }
 
         [TestMethod]
-        public void JotEnsureJotHasAllProperties()
+        public void JotEnsureHasAllProperties()
         {
             Jot a_jot = new Jot();
             DateTime expected_time = DateTime.Now;
