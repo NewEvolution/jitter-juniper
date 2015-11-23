@@ -1,5 +1,6 @@
 ﻿using Moq;
 using System;
+using System.Linq;
 using Jitter.Models;
 using System.Data.Entity;
 using System.Collections.Generic;
@@ -42,12 +43,17 @@ namespace Jitter.Tests.Models
             };
             Mock<DbSet<JitterUser>> mock_set = new Mock<DbSet<JitterUser>>();
             mock_set.Object.AddRange(expected);
+            var data_source = expected.AsQueryable();
+            mock_set.As<IQueryable<JitterUser>>().Setup(data => data.Provider).Returns(data_source.Provider);
+            mock_set.As<IQueryable<JitterUser>>().Setup(data => data.Expression).Returns(data_source.Expression);
+            mock_set.As<IQueryable<JitterUser>>().Setup(data => data.ElementType).Returns(data_source.ElementType);
+            mock_set.As<IQueryable<JitterUser>>().Setup(data => data.GetEnumerator()).Returns(data_source.GetEnumerator());
             Mock<JitterContext> mock_context = new Mock<JitterContext>();
             mock_context.Setup(jc => jc.JitterUsers).Returns(mock_set.Object);
             JitterRepo repo = new JitterRepo(mock_context.Object);
             var actual = repo.GetAllUsers();
             CollectionAssert.AreEqual(expected, actual);
-            //Assert.AreEqual("foo", actual.First().Handle);
+            Assert.AreEqual("foo", actual.First().Handle);
         }
     }
 }
