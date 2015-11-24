@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Jitter.Models
 {
-    public class JitterUser
+    public class JitterUser : IComparable
     {
         [Key]
         public int JitterUserId { get; set; }
@@ -29,5 +29,11 @@ namespace Jitter.Models
 
         public List<Jot> Jots { get; set; }
         public List<JitterUser> Following { get; set; }
+
+        public int CompareTo(object obj)
+        {
+            JitterUser comparator = obj as JitterUser;
+            return Handle.CompareTo(comparator.Handle);
+        }
     }
 }

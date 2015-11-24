@@ -75,5 +75,125 @@ namespace Jitter.Tests.Models
             CollectionAssert.AreEqual(expected, actual);
             Assert.AreEqual("foo", actual.First().Handle);
         }
+
+        [TestMethod]
+        public void JitterRepoEnsureUserAccessViaHandle()
+        {
+            var expected = new List<JitterUser>
+            {
+                new JitterUser { Handle = "foo" },
+                new JitterUser { Handle = "bar" },
+                new JitterUser { Handle = "grille" }
+            };
+            mock_set.Object.AddRange(expected);
+            ConnnectMocksToDataStore(expected);
+            string handle = "bar";
+            JitterUser actual = repo.GetUserByHandle(handle);
+            Assert.AreEqual(handle, actual.Handle);
+        }
+
+        [TestMethod]
+        public void JitterRepoNonExistantUserAccessViaHandle()
+        {
+            var expected = new List<JitterUser>
+            {
+                new JitterUser { Handle = "foo" },
+                new JitterUser { Handle = "bar" },
+                new JitterUser { Handle = "grille" }
+            };
+            mock_set.Object.AddRange(expected);
+            ConnnectMocksToDataStore(expected);
+            string handle = "potato";
+            JitterUser actual = repo.GetUserByHandle(handle);
+            Assert.IsNull(actual);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void JitterRepoErroneousMultiUserAccessViaHandle()
+        {
+            var expected = new List<JitterUser>
+            {
+                new JitterUser { Handle = "foo" },
+                new JitterUser { Handle = "bar" },
+                new JitterUser { Handle = "bar" }
+            };
+            mock_set.Object.AddRange(expected);
+            ConnnectMocksToDataStore(expected);
+            string handle = "bar";
+            JitterUser actual = repo.GetUserByHandle(handle);
+        }
+
+        [TestMethod]
+        public void JitterRepoEnsureHandleIsAvailable()
+        {
+            var expected = new List<JitterUser>
+            {
+                new JitterUser { Handle = "foo" },
+                new JitterUser { Handle = "bar" },
+                new JitterUser { Handle = "grille" }
+            };
+            mock_set.Object.AddRange(expected);
+            ConnnectMocksToDataStore(expected);
+            string handle = "potato";
+            bool actual = repo.IsHandleAvailable(handle);
+            Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        public void JitterRepoEnsureHandleIsUnavailable()
+        {
+            var expected = new List<JitterUser>
+            {
+                new JitterUser { Handle = "foo" },
+                new JitterUser { Handle = "bar" },
+                new JitterUser { Handle = "grille" }
+            };
+            mock_set.Object.AddRange(expected);
+            ConnnectMocksToDataStore(expected);
+            string handle = "bar";
+            bool actual = repo.IsHandleAvailable(handle);
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        public void JitterRepoEnsureHandleIsUnavailableMultipleHits()
+        {
+            var expected = new List<JitterUser>
+            {
+                new JitterUser { Handle = "foo" },
+                new JitterUser { Handle = "bar" },
+                new JitterUser { Handle = "bar" }
+            };
+            mock_set.Object.AddRange(expected);
+            ConnnectMocksToDataStore(expected);
+            string handle = "bar";
+            bool actual = repo.IsHandleAvailable(handle);
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        public void JitterRepoEnsureSearchByHandle()
+        {
+            var expected = new List<JitterUser>
+            {
+                new JitterUser { Handle = "foo" },
+                new JitterUser { Handle = "barfly" },
+                new JitterUser { Handle = "barman" },
+                new JitterUser { Handle = "foobajoob" }
+            };
+            mock_set.Object.AddRange(expected);
+            ConnnectMocksToDataStore(expected);
+            string handle = "bar";
+            List<JitterUser> actualList = repo.SearchByHandle(handle);
+            List<JitterUser> expectedList = new List<JitterUser>
+            {
+                new JitterUser { Handle = "barfly" },
+                new JitterUser { Handle = "barman" }
+            };
+            Assert.AreEqual(expectedList[0].Handle, actualList[0].Handle);
+            Assert.AreEqual(expectedList[1].Handle, actualList[1].Handle);
+            //CollectionAssert.AreEqual(expectedList, actualList);
+        }
     }
 }
