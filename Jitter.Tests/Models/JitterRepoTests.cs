@@ -195,5 +195,29 @@ namespace Jitter.Tests.Models
             Assert.AreEqual(expectedList[1].Handle, actualList[1].Handle);
             //CollectionAssert.AreEqual(expectedList, actualList);
         }
+
+        [TestMethod]
+        public void JitterRepoEnsureSearchByName()
+        {
+            var expected = new List<JitterUser>
+            {
+                new JitterUser { Handle = "foo", FirstName = "Tim", LastName = "Fish" },
+                new JitterUser { Handle = "barfly", FirstName = "Lobo", LastName = "Grande" },
+                new JitterUser { Handle = "barman", FirstName = "Timothy", LastName = "Jenkins" },
+                new JitterUser { Handle = "foobajoob", FirstName = "Wendy", LastName = "Cassiopeia" }
+            };
+            mock_set.Object.AddRange(expected);
+            ConnnectMocksToDataStore(expected);
+            string name = "Tim";
+            List<JitterUser> actualList = repo.SearchByName(name);
+            List<JitterUser> expectedList = new List<JitterUser>
+            {
+                new JitterUser { Handle = "barman", FirstName = "Timothy", LastName = "Jenkins" },
+                new JitterUser { Handle = "foo", FirstName = "Tim", LastName = "Fish" }
+            };
+            Assert.AreEqual(expectedList[0].Handle, actualList[0].Handle);
+            Assert.AreEqual(expectedList[1].Handle, actualList[1].Handle);
+            //CollectionAssert.AreEqual(expectedList, actualList);
+        }
     }
 }
