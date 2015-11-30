@@ -2,6 +2,7 @@
 using System.Web;
 using System.Linq;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Jitter.Models
 {
@@ -55,9 +56,31 @@ namespace Jitter.Models
         public List<JitterUser> SearchByName(string name)
         {
             var query = from users in _context.JitterUsers select users;
-            List<JitterUser> foundUsers = query.Where(user => user.FirstName.Contains(name)||user.LastName.Contains(name)).ToList();
+            List<JitterUser> foundUsers = query.Where(user => Regex.IsMatch(user.FirstName, name, RegexOptions.IgnoreCase)|| Regex.IsMatch(user.LastName, name, RegexOptions.IgnoreCase)).ToList();
             foundUsers.Sort();
             return foundUsers;
+        }
+
+        public List<Jot> GetAllJots()
+        {
+            var query = from jots in _context.Jots select jots;
+            return query.ToList();
+        }
+
+        public bool CreateJot(JitterUser jitter_user, string jot_content)
+        {
+            Jot new_jot = new Jot { Author = jitter_user, Content = jot_content, Date = DateTime.Now };
+            try
+            {
+                Jot added_jot = _context.Jots.Add(new_jot);
+                _context.SaveChanges();
+                return true;
+                //return added_jot != null; //why is this null?
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }
