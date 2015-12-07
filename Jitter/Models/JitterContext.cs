@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Jitter.Models
 {
-    public class JitterContext : DbContext
+    public class JitterContext : ApplicationDbContext
     {
         public virtual DbSet<JitterUser> JitterUsers { get; set; }
         public virtual DbSet<Jot> Jots { get; set; }
