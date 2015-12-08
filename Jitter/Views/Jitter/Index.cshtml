@@ -1,5 +1,15 @@
-﻿@{
+﻿@model IEnumerable<Jitter.Models.Jot>
+@{
     Layout = "~/Views/Shared/_JitterLayout.cshtml";
 }
 
-
+@foreach (var item in Model)
+{
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="jot">
+                @item.Content
+            </div>
+        </div>
+    </div>
+}

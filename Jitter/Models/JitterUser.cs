@@ -11,6 +11,8 @@ namespace Jitter.Models
         [Key]
         public int JitterUserId { get; set; }
 
+        public virtual ApplicationUser RealUser { get; set; }
+
         [Required]
         [MinLength(3)]
         [MaxLength(20)]

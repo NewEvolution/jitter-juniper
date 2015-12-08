@@ -1,18 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
+using System.Linq;
+using Jitter.Models;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using System.Collections.Generic;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace Jitter.Controllers
 {
     public class JitterController : Controller
     {
+
+        public JitterRepo Repo { get; set; }
+
+        public JitterController() : base()
+        {
+            Repo = new JitterRepo();
+        }
+
         // GET: Jitter
         // Public feed here?
         public ActionResult Index()
         {
-            return View();
+            List<Jot> the_jots = Repo.GetAllJots();
+            return View(the_jots);
         }
 
         [Authorize]
@@ -24,7 +36,10 @@ namespace Jitter.Controllers
         [Authorize]
         public ActionResult UserFeed()
         {
-            return View();
+            string user_id = User.Identity.GetUserId();
+            JitterUser current_user = Repo.GetAllUsers().Where(u => u.RealUser.Id == user_id).Single();
+            List<Jot> user_jots = Repo.GetUserJots(current_user);
+            return View(user_jots);
         }
 
         // GET: Jitter/Details/5

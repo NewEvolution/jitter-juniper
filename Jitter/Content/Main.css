@@ -1,4 +1,5 @@
 ﻿body {
+    background-color: rgb(234, 238, 242);
 }
 
 .green {
@@ -7,4 +8,22 @@
 
 .red {
     border: 1px solid red;
+}
+
+.jot {
+    margin: 20px;
+    padding: 20px;
+    min-height: 125px;
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid rgba(111, 113, 114, 0.33);
+    transition: background-color linear 0.02s;
+    -o-transition: background-color linear 0.02s;
+    -moz-transition: background-color linear 0.02s;
+    -webkit-transition: background-color linear 0.02s;
+}
+
+.jot:hover {
+    cursor: pointer;
+    background-color: rgba(185, 188, 191, 0.33);
 }
