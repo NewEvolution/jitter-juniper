@@ -28,8 +28,13 @@ namespace Jitter
                       "~/Content/main.css",
                       "~/Content/site.css"));
 
-            bundles.Add(new ScriptBundle("~/Content/myjavascript").Include(
-                      "~/Content/custom.js"));
+            bundles.Add(new ScriptBundle("~/bundles/myangular").Include(
+                      "~/Scripts/app.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/angularjs").Include(
+                      "~/Scripts/angular.min.js",
+                      "~/Scripts/angular-route.min.js",
+                      "~/Scripts/angular-mocks.js"));
         }
     }
 }

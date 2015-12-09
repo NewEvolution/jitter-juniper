@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Jitter;
+using System;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Jitter;
 using Jitter.Controllers;
+using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Jitter.Tests.Controllers
 {

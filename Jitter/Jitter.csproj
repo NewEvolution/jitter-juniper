@@ -181,12 +181,13 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JitterController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512071549045_InitialCreate.cs" />
-    <Compile Include="Migrations\201512071549045_InitialCreate.Designer.cs">
-      <DependentUpon>201512071549045_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\201512091554571_InitialCreate.cs" />
+    <Compile Include="Migrations\201512091554571_InitialCreate.Designer.cs">
+      <DependentUpon>201512091554571_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -202,14 +203,21 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\custom.js" />
+    <Content Include="Scripts\app.js" />
     <Content Include="Content\Main.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular-route.js" />
+    <Content Include="Scripts\angular-route.min.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Scripts\angular-route.min.js.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -274,8 +282,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201512071549045_InitialCreate.resx">
-      <DependentUpon>201512071549045_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201512091554571_InitialCreate.resx">
+      <DependentUpon>201512091554571_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

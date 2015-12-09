@@ -7,11 +7,11 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body>
+<body ng-app="jitter">
     @Html.Partial("_Nav")
     <div class="container body-content">
         <div class="row">
-            <div class="col-xs-12 green">
+            <div class="col-xs-12">
                 <input type="text" />
             </div>
         </div>
@@ -25,7 +25,8 @@
     </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/Content/myjavascript")
+    @Scripts.Render("~/bundles/angularjs")
+    @Scripts.Render("~/bundles/myangular")
     @RenderSection("scripts", required: false)
 </body>
 </html>
