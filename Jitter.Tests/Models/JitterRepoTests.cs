@@ -288,5 +288,21 @@ namespace Jitter.Tests.Models
             Assert.AreEqual(1, repo.GetAllUsers().Count);
             Assert.IsTrue(successful);
         }
+
+        [TestMethod]
+        public void JitterRepoEnsureNoDuplicateJitterUserHandles()
+        {
+            DateTime base_time = DateTime.Now;
+            List<JitterUser> expected_jitter_users = new List<JitterUser>();
+            ConnnectMocksToDataStore(expected_jitter_users);
+            string handle = "NewEvolution";
+            mock_set.Setup(ju => ju.Add(It.IsAny<JitterUser>()))
+                .Callback((JitterUser ju) => expected_jitter_users.Add(ju))
+                .Returns(mock_set.Object.Where(a => a.Handle == handle).Single);
+            repo.CreateJitterUser(test_user, handle);
+            bool successful = repo.CreateJitterUser(test_user, handle);
+            Assert.AreEqual(1, repo.GetAllUsers().Count);
+            Assert.IsFalse(successful);
+        }
     }
 }

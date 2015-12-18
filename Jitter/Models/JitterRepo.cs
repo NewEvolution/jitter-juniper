@@ -102,6 +102,11 @@ namespace Jitter.Models
 
         public bool CreateJitterUser(ApplicationUser _user, string handle)
         {
+            bool handle_available = IsHandleAvailable(handle);
+            if (!handle_available)
+            {
+                return false;
+            }
             JitterUser new_jitter_user = new JitterUser { Handle = handle, RealUser = _user };
             try
             {
