@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Jitter.Models.JitterUser>
+
+@{
+    Layout = "~/Views/Shared/_JitterLayout.cshtml";
+}
+
+<table>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.JitterUserId</td>
+            <td>@item.Handle</td>
+            @if (item.RealUser == null)
+            {
+                <td>Not</td>
+                <td>Connected</td>
+            }
+            else
+            {
+                <td>@item.RealUser.Email</td>
+                <td>@item.RealUser.Id</td>
+            }
+        </tr>
+    }
+</table>

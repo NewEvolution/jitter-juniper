@@ -19,6 +19,12 @@ namespace Jitter.Controllers
             Repo = new JitterRepo();
         }
 
+        public ActionResult Admin()
+        {
+            List<JitterUser> all_users = Repo.GetAllUsers();
+            return View(all_users);
+        }
+
         // GET: Jitter
         // Public feed here?
         public ActionResult Index()
@@ -37,9 +43,22 @@ namespace Jitter.Controllers
         public ActionResult UserFeed()
         {
             string user_id = User.Identity.GetUserId();
-            JitterUser current_user = Repo.GetAllUsers().Where(u => u.RealUser.Id == user_id).Single();
-            List<Jot> user_jots = Repo.GetUserJots(current_user);
-            return View(user_jots);
+            try
+            {
+                JitterUser current_user = Repo.GetAllUsers().Where(u => u.RealUser.Id == user_id).SingleOrDefault();
+                if (current_user == null)
+                {
+                    List<Jot> the_jots = Repo.GetAllJots();
+                    return View(the_jots);
+                }
+                List<Jot> user_jots = Repo.GetUserJots(current_user);
+                return View(user_jots);
+            }
+            catch (Exception)
+            {
+                List<Jot> the_jots = Repo.GetAllJots();
+                return View(the_jots);
+            }
         }
 
         // GET: Jitter/Details/5
