@@ -285,6 +285,7 @@
     <Content Include="Views\Jitter\TopFavs.cshtml" />
     <Content Include="Views\Jitter\UserFeed.cshtml" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
+    <Content Include="Views\Jitter\Admin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
