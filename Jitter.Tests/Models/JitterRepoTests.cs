@@ -3,6 +3,8 @@ using System;
 using System.Linq;
 using Jitter.Models;
 using System.Data.Entity;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -12,8 +14,9 @@ namespace Jitter.Tests.Models
     public class JitterRepoTests
     {
         private Mock<DbSet<JitterUser>> mock_set;
-        private Mock<DbSet<Jot>> mock_jot_set;
         private Mock<JitterContext> mock_context;
+        private Mock<DbSet<Jot>> mock_jot_set;
+        private ApplicationUser test_user;
         private JitterRepo repo;
 
         private void ConnnectMocksToDataStore(IEnumerable<JitterUser> data_store)
@@ -43,6 +46,7 @@ namespace Jitter.Tests.Models
             mock_jot_set = new Mock<DbSet<Jot>>();
             mock_context = new Mock<JitterContext>();
             repo = new JitterRepo(mock_context.Object);
+            test_user = new ApplicationUser { Email = "test@example.com" };
         }
 
         [TestCleanup]
@@ -262,9 +266,26 @@ namespace Jitter.Tests.Models
             JitterUser jitter_user = new JitterUser { Handle = "foo" };
             ConnnectMocksToDataStore(expected_jots);
             string jot_content = "Hello world!";
-            mock_jot_set.Setup(js => js.Add(It.IsAny<Jot>())).Callback((Jot j) => expected_jots.Add(j));
+            mock_jot_set.Setup(js => js.Add(It.IsAny<Jot>()))
+                .Callback((Jot j) => expected_jots.Add(j))
+                .Returns(mock_jot_set.Object.Where(j => j.Content == jot_content).Single);
             bool successful = repo.CreateJot(jitter_user, jot_content);
             Assert.AreEqual(1, repo.GetAllJots().Count);
+            Assert.IsTrue(successful);
+        }
+
+        [TestMethod]
+        public void JitterRepoEnsureJitterUserCreation()
+        {
+            DateTime base_time = DateTime.Now;
+            List<JitterUser> expected_jitter_users = new List<JitterUser>();
+            ConnnectMocksToDataStore(expected_jitter_users);
+            string handle = "NewEvolution";
+            mock_set.Setup(ju => ju.Add(It.IsAny<JitterUser>()))
+                .Callback((JitterUser ju) => expected_jitter_users.Add(ju))
+                .Returns(mock_set.Object.Where(a => a.Handle == handle).Single);
+            bool successful = repo.CreateJitterUser(test_user, handle);
+            Assert.AreEqual(1, repo.GetAllUsers().Count);
             Assert.IsTrue(successful);
         }
     }

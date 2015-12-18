@@ -92,8 +92,22 @@ namespace Jitter.Models
             {
                 Jot added_jot = _context.Jots.Add(new_jot);
                 _context.SaveChanges();
-                return true;
-                //return added_jot != null; //why is this null?
+                return added_jot != null;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public bool CreateJitterUser(ApplicationUser _user, string handle)
+        {
+            JitterUser new_jitter_user = new JitterUser { Handle = handle, RealUser = _user };
+            try
+            {
+                JitterUser added_jitter_user = _context.JitterUsers.Add(new_jitter_user);
+                _context.SaveChanges();
+                return added_jitter_user != null;
             }
             catch (Exception)
             {
