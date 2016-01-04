@@ -40,11 +40,27 @@ namespace Jitter.Models
 
         public List<Jot> GetUserJots(JitterUser user)
         {
-            var query = from u in _context.JitterUsers where u.JitterUserId == user.JitterUserId select u;
-            JitterUser found_user = query.Single<JitterUser>();
-            return found_user.Jots;
+            // user may be null b/c of Line 75 in JitterController
+            if (user != null)
+            {
+                var query = from u in _context.JitterUsers where u.JitterUserId == user.JitterUserId select u;
+                JitterUser found_user = query.SingleOrDefault<JitterUser>();
+                if (found_user == null)
+                {
+                    return new List<Jot>();
+                }
+                return found_user.Jots;
+            } else
+            {
+                return new List<Jot>();
+            }
         }
 
+        public void DeleteAllUsers()
+        {
+            Context.JitterUsers.RemoveRange(Context.JitterUsers);
+            Context.SaveChanges();
+        }
 
         public JitterUser GetUserByHandle(string handle)
         {
@@ -121,6 +137,30 @@ namespace Jitter.Models
                 is_added = false;
             }
             return is_added;
+        }
+
+        public bool CreateJitterUser(ApplicationUser app_user, string new_handle)
+        {
+            bool handle_is_available = this.IsHandleAvailable(new_handle);
+            if (handle_is_available)
+            {
+                JitterUser new_user = new JitterUser { RealUser = app_user, Handle = new_handle };
+                bool is_added = true;
+                try
+                {
+                    JitterUser added_user = _context.JitterUsers.Add(new_user);
+                    _context.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    is_added = false;
+                }
+                return is_added;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
